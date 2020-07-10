@@ -1,0 +1,38 @@
+.Case-Container1 {
+    background-color: red;
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 40px;
+    padding: 10px;
+    display: absolute;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 30px;
+}
+
+.Case-Container2 {
+    background-color: green;
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 40px;
+    padding: 10px;
+    display: absolute;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 30px;
+}
+
+.Case-Container3 {
+    background-color: darkred;
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 40px;
+    padding: 10px;
+    display: absolute;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 30px;
+}
