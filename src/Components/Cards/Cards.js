@@ -1,7 +1,6 @@
 import React from 'react'
 import DataContext from '../../API/DataContext';
 import NumberFormat from 'react-number-format';
-import CountUp from 'react-countup';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -44,7 +43,7 @@ const Cards = () => {
     console.log("Final", infected);
     
     if (!infected, !deaths, !recovered, !active, !serious, !unresolved) {
-        return 'Loading...';
+        return 'Loading...'
     }
 
     return (
