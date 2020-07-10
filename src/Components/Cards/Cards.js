@@ -42,7 +42,7 @@ const Cards = () => {
 
     console.log("Final", infected);
     
-    if (!infected == !deaths == !recovered == !active == !serious == !unresolved) {
+    if (!infected === !deaths === !recovered === !active === !serious === !unresolved) {
         return 'Loading...'
     }
 
