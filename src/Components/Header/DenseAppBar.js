@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PublicIcon from '@material-ui/icons/Public';
 import MailIcon from '@material-ui/icons/Mail';
-import { Cards, Chart, CountrySelect } from '../index';
+import { Cards, CountrySelect } from '../index';
 
 const drawerWidth = 240;
 
@@ -182,7 +182,6 @@ const DenseAppBar = ( ) => {
                 <div className={classes.toolbar} />
                 <div>
                     <Cards />
-                    <Chart />
                     <CountrySelect />
                 </div>    
             </main>

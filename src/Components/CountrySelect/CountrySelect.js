@@ -1,10 +1,26 @@
-import React from 'react'
-
+import React, { useState, useEffect } from 'react'
+import { FormControl, NativeSelect } from '@material-ui/core';
+import { countries } from '../../API';
 const CountrySelect = () => {
+    
+    let [countriesData, setCountriesData] = useState([]);
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            setCountriesData(await countries());
+        }
+        
+        fetchCountries();
+    }, [setCountriesData]);
+    
+    console.log("Countries", countriesData);
+
     return (
-        <div>
-        <h1>Select Country</h1>
-        </div>
+        <FormControl>
+            <NativeSelect>
+                <option value="global">Global</option>
+            </NativeSelect>
+        </FormControl>
     )
 }
 
