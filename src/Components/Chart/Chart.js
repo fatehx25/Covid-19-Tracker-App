@@ -22,13 +22,14 @@ const Chart = () => {
           {
             data: dailyData.map(({ confirmed }) => confirmed),
             label: "Infected",
-            borderColor: "#3333ff",
+            backgroundColor: "rgba(104, 102, 235, 0.56)",
+            borderColor: "darkblue",
             fill: true,
           },
           {
             data: dailyData.map(({ deaths }) => deaths),
             label: "Deaths",
-            borderColor: "red",
+            borderColor: "darkred",
             backgroundColor: "rgba(255, 0, 0, 0.5)",
             fill: true,
           },
@@ -38,9 +39,8 @@ const Chart = () => {
     />
   ) : null;
 
-  console.log("Date_Check", dailyData[({ date }) => date]);
 
-  return <div className="container">{lineChart}</div>
+  return <div className="container chart-container">{lineChart}</div>
 };
 
 export default Chart;

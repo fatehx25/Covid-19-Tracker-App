@@ -61,7 +61,7 @@ const Cards = () => {
                 <Grid item xs={10}>
                 <Grid container>
                     <Grid item xs={3}>
-                        <Card className={classes.root}>
+                        <Card className={classes.root} >
                             <CardActionArea>
                                 <CardMedia
                                     className={classes.media}

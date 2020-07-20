@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -16,8 +16,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PublicIcon from '@material-ui/icons/Public';
-import MailIcon from '@material-ui/icons/Mail';
-import { Cards, CountrySelect } from '../index';
+import { Cards } from '../index';
+import { fetchCountries } from '../../API';
+import ReactCountryFlag from "react-country-flag"
+import coronaVirus from "../corona.png"
+import "./DenseAppBar.css";
 
 const drawerWidth = 240;
 
@@ -25,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
+
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -114,6 +118,39 @@ const DenseAppBar = ( ) => {
     // }, [])
 
     // console.log("Cheking in header", dataGlobal_Cases);
+    
+    //CountrySelect
+    
+    let [countriesData, setCountriesData] = useState([]);
+    let [countriesCode, SetCountriesCode] = useState([]);
+
+    useEffect(() => {
+        const fetchNation = async () => {
+
+            const nationsData = await fetchCountries();
+            const getCountry = nationsData.map( (nation) => (nation.title) );
+            const getCode = nationsData.map( (short) => (short.code) );
+
+            var index = getCountry.indexOf("Diamond Princess");
+            if (index > -1) {
+                getCountry.splice(index, 1);
+                getCountry.splice(-1, 1);
+                getCode.splice(index, 1);
+                getCode.splice(-1, 1)
+            }
+            console.log(getCode);
+            
+            setCountriesData(getCountry);
+            SetCountriesCode(getCode);
+        }
+        
+        fetchNation();
+    }, []);
+    
+    console.log("Countries", countriesData);
+
+    console.log(JSON.stringify(countriesCode[0]));    
+
 
     return (
         <div className={classes.root}>
@@ -137,7 +174,7 @@ const DenseAppBar = ( ) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap>
-                    Covid-19 Tracker
+                    C<img src={ coronaVirus } alt="Coronavirus" width="20" height="20" />ovid-19 Tracker
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -163,16 +200,19 @@ const DenseAppBar = ( ) => {
                 <List>
                     {['Global'].map((text, index) => (
                     <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <PublicIcon /> : <MailIcon />}</ListItemIcon>
+                        <ListItemIcon><PublicIcon /></ListItemIcon>   
                         <ListItemText primary={text} />
                     </ListItem>
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {['All mail', 'Trash', 'Spam', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                    {countriesData.map((text, index) => (
                         <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <PublicIcon /> : <MailIcon />}</ListItemIcon>
+                            <ListItemIcon>
+                                {index-index === 0? <ReactCountryFlag countryCode={ String(countriesCode[index] ) } svg style={{width: '2em', height: '2em'}}/> : <PublicIcon />}
+                            </ListItemIcon>
+
                             <ListItemText primary={text} />
                         </ListItem>
                     ))}
@@ -182,7 +222,6 @@ const DenseAppBar = ( ) => {
                 <div className={classes.toolbar} />
                 <div>
                     <Cards />
-                    <CountrySelect />
                 </div>    
             </main>
         </div>
@@ -190,3 +229,6 @@ const DenseAppBar = ( ) => {
 }
 
 export default DenseAppBar;
+
+//['All mail', 'Trash', 'Spam', 'Starred', 'Send email', 'Drafts']
+//<PublicIcon />

@@ -36,3 +36,9 @@
     flex: 1;
     font-size: 30px;
 }
+
+.Boxy {
+    box-shadow: 0 8px 80px 0 rgba(0,0,0,0.24), 0 17px 80px 0 rgba(0,0,0,0.19);
+    border-radius: 40px;
+    border-color: ivory;
+}
