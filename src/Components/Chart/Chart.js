@@ -4,16 +4,20 @@ import { Line } from "react-chartjs-2";
 import './Chart.css';
 
 const Chart = () => {
-  const [dailyData, SetDailyData] = useState([]);
+  const [dailyData, setDailyData] = useState([]);
 
   useEffect(() => {
     async function fetchAPI() {
-      SetDailyData(await fetchDailyData());
+      setDailyData(await fetchDailyData());
     }
 
     fetchAPI();
   }, []);
 
+  if (dailyData.length) {
+    console.log("finalll:", dailyData);
+  }
+  
   const lineChart = dailyData.length ? (
     <Line
       data={{
@@ -38,7 +42,10 @@ const Chart = () => {
       }}
     />
   ) : null;
-
+      
+  if (dailyData.length) {    
+    console.log("Checking for Chart Data:", dailyData.map(({ confirmed }) => confirmed));
+  }
 
   return <div className="container chart-container">{lineChart}</div>
 };

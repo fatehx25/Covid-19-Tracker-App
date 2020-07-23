@@ -1,0 +1,66 @@
+.back-note-cases {
+    background-color: #1877F2; 
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 10px;
+    justify-content: space-between;
+    margin: 10px 0;
+    flex: 1;
+    box-shadow: black;
+}
+
+.back-note-deaths {
+    background-color: red; 
+    color: whitesmoke;
+    padding: 5px;
+    border-radius: 10px;
+    justify-content: space-between;
+    margin: 10px 0;
+    flex: 1;
+}
+
+
+.Case-Box1 {
+    background: linear-gradient(to right,#327074, #7FC2C7); 
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    padding: 8px;
+    display: absolute;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 20px;
+    box-shadow: 0px 10px 40px 10px rgba(0, 0, 0, 0.349);
+}
+
+.font-y {
+    font-size: 15px;
+}
+
+.Case-Box3 {
+    background: linear-gradient(to right, #7FC2C7, #327074); 
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    padding: 10px;
+    display: absolute;
+    justify-content: space-between;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 20px;
+    box-shadow: 0px 10px 40px 10px rgba(0, 0, 0, 0.349);
+}
+
+.Case-Box2 {
+    background-color: green;
+    color: whitesmoke;
+    box-shadow: var(--box-shadow);
+    border-radius: 40px;
+    padding: 10px;
+    display: absolute;
+    justify-content: center;
+    margin: 20px 0;
+    flex: 1;
+    font-size: 30px;
+}

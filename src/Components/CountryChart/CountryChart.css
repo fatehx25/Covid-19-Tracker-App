@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+}
+
+.chart-container {
+    background: linear-gradient(to right, #f4f3f8ea, #9fc5fddc);
+    /* background-color: #fff; */
+    /* box-shadow: var(--box-shadow); */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    /* margin: 20px 0; */
+}
+
+.chart-container > div {
+    flex: 1;
+    text-align: center;
+    
+  }
+  
+.chart-container > div:first-of-type {
+    border-right: 3px solid #dedede;
+}

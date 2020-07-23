@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -16,11 +17,16 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import PublicIcon from '@material-ui/icons/Public';
-import { Cards } from '../index';
+import { Cards, CountrySelect } from '../index';
 import { fetchCountries } from '../../API';
+import StateContext from '../../API/StateContext';
+import CountryContext from '../../API/CountryContext'; 
+import IndexContext from '../../API/IndexContext';
+import CodeContext from '../../API/CodeContext';
 import ReactCountryFlag from "react-country-flag"
 import coronaVirus from "../corona.png"
 import "./DenseAppBar.css";
+
 
 const drawerWidth = 240;
 
@@ -88,11 +94,18 @@ const useStyles = makeStyles((theme) => ({
     colorit: {
         backgroundColor: "red",
     },
+    root_b: {
+        '& > *': {
+        margin: theme.spacing(1),
+        },
+    },
 }));
+
+
 const DenseAppBar = ( ) => {
     let classes = useStyles();
     let theme = useTheme();
-    let [open, setOpen] = React.useState(false);
+    let [open, setOpen] = useState(false);
 
     let handleDrawerOpen = () => {
         setOpen(true);
@@ -126,22 +139,26 @@ const DenseAppBar = ( ) => {
 
     useEffect(() => {
         const fetchNation = async () => {
+            try {
+                const nationsData = await fetchCountries();
+                const getCountry = nationsData.map( (nation) => (nation.title) );
+                const getCode = nationsData.map( (short) => (short.code) );
 
-            const nationsData = await fetchCountries();
-            const getCountry = nationsData.map( (nation) => (nation.title) );
-            const getCode = nationsData.map( (short) => (short.code) );
-
-            var index = getCountry.indexOf("Diamond Princess");
-            if (index > -1) {
-                getCountry.splice(index, 1);
-                getCountry.splice(-1, 1);
-                getCode.splice(index, 1);
-                getCode.splice(-1, 1)
+                var index = getCountry.indexOf("Diamond Princess");
+                if (index > -1) {
+                    getCountry.splice(index, 1);
+                    getCountry.splice(-1, 1);
+                    getCode.splice(index, 1);
+                    getCode.splice(-1, 1)
+                }
+                console.log("final check", getCode);
+                
+                setCountriesData(getCountry);
+                SetCountriesCode(getCode);
             }
-            console.log(getCode);
-            
-            setCountriesData(getCountry);
-            SetCountriesCode(getCode);
+            catch (error) {
+                console.log(error);
+            }
         }
         
         fetchNation();
@@ -149,82 +166,97 @@ const DenseAppBar = ( ) => {
     
     console.log("Countries", countriesData);
 
-    console.log(JSON.stringify(countriesCode[0]));    
+    console.log(JSON.stringify(countriesCode[0])); 
+    
+    let countryState = useContext(StateContext);
+    let selectCountry = countryState[0];
+    let setSelectCountry = countryState[1];
 
+    console.log("Panel State:", selectCountry);
+
+    let iState = useContext(CountryContext);
+    let countryindex = iState[0];
+    let setCountryIndex = iState[1];
+    console.log("late", iState[0]);
 
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                }, classes.colorit)}
-            >
-                <Toolbar>
-                    <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={handleDrawerOpen}
-                    edge="start"
-                    className={clsx(classes.menuButton, {
-                        [classes.hide]: open,
-                    })}
+        <CodeContext.Provider value={countriesCode}>
+            <IndexContext.Provider value={countryindex}>
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    className={clsx(classes.appBar, {
+                        [classes.appBarShift]: open,
+                    }, classes.colorit)}
                     >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap>
-                    C<img src={ coronaVirus } alt="Coronavirus" width="20" height="20" />ovid-19 Tracker
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                    }),
-                }}
-            >
-                <div className={classes.toolbar}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    {['Global'].map((text, index) => (
-                    <ListItem button key={text}>
-                        <ListItemIcon><PublicIcon /></ListItemIcon>   
-                        <ListItemText primary={text} />
-                    </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {countriesData.map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>
-                                {index-index === 0? <ReactCountryFlag countryCode={ String(countriesCode[index] ) } svg style={{width: '2em', height: '2em'}}/> : <PublicIcon />}
-                            </ListItemIcon>
-
+                    <Toolbar>
+                        <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(classes.menuButton, {
+                            [classes.hide]: open,
+                        })}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap>
+                            <div className="Font-style">C<img src={ coronaVirus } alt="Coronavirus" width="20" height="20" />vid-19 Tracker</div>
+                        </Typography>
+                        <div className={classes.root_b}> <Button color="primary">{selectCountry}</Button> </div>
+                    </Toolbar>
+                </AppBar>
+                <Drawer
+                    variant="permanent"
+                    className={clsx(classes.drawer, {
+                        [classes.drawerOpen]: open,
+                        [classes.drawerClose]: !open,
+                    })}
+                    classes={{
+                        paper: clsx({
+                        [classes.drawerOpen]: open,
+                        [classes.drawerClose]: !open,
+                        }),
+                    }}
+                >
+                    <div className={classes.toolbar}>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>
+                        {['Global'].map((text, index) => (
+                        <ListItem button key={text} onClick={() => {setSelectCountry( "Global" )}}>
+                            <ListItemIcon><PublicIcon /></ListItemIcon>   
                             <ListItemText primary={text} />
                         </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <div>
-                    <Cards />
-                </div>    
-            </main>
-        </div>
+                        ))}
+                    </List>
+                    <Divider />
+                    <List>
+                        {countriesData.map((text, index) => (
+                            <ListItem button key={text} onClick={() => {setSelectCountry(String(countriesData[index])); setCountryIndex(index) }}>
+                                <ListItemIcon>
+                                    {index-index === 0? <ReactCountryFlag countryCode={ String(countriesCode[index] ) } svg style={{width: '2em', height: '2em'}}/> : <PublicIcon />}
+                                </ListItemIcon>
+
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <div>
+                        {selectCountry === "Global"? <Cards />: <CountrySelect />}
+                    </div>    
+                </main>
+            </div>
+            </IndexContext.Provider>
+        </CodeContext.Provider>
     );
 }
 

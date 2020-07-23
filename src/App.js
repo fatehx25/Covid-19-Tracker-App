@@ -3,6 +3,8 @@ import { DenseAppBar } from "./Components";
 //import MainGrid from './Components/MainGrid';
 import { fetchData } from "./API/";
 import DataContext from "./API/DataContext";
+import StateContext from "./API/StateContext";
+import CountryContext from "./API/CountryContext";
 import "./App.css";
 
 function App() {
@@ -43,12 +45,20 @@ function App() {
     6: checkData,
   };
 
+  let globalState = useState("Global");  
+
+  let indexState = useState(null);
+
   return (
-    <DataContext.Provider value={Data}>
-      <div className="App">
-        <DenseAppBar />
-      </div>
-    </DataContext.Provider>
+    <CountryContext.Provider value={indexState}>
+      <StateContext.Provider value={globalState}>  
+        <DataContext.Provider value={Data}>
+          <div className="App">
+            <DenseAppBar />
+          </div>
+        </DataContext.Provider>
+      </StateContext.Provider>
+    </CountryContext.Provider>  
   );
 }
 
