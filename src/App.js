@@ -33,7 +33,9 @@ function App() {
   const dataGlobal_Serious = dataGlobal && dataGlobal.total_serious_cases;
   const dataGlobal_Unresolved = dataGlobal && dataGlobal.total_unresolved;
   
+ 
   console.log("done", dataGlobal_Cases);
+  
 
   let Data = {
     0: dataGlobal_Cases,
@@ -54,7 +56,7 @@ function App() {
       <StateContext.Provider value={globalState}>  
         <DataContext.Provider value={Data}>
           <div className="App">
-            <DenseAppBar />
+            {globalData === undefined? "Sorry, the website server seems down! Kindly refresh the page or revisit after some time. We apologize for the inconvenience!": <DenseAppBar />}
           </div>
         </DataContext.Provider>
       </StateContext.Provider>
